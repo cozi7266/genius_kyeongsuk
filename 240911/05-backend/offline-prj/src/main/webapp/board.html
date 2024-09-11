@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	textarea {
+		width: 500px;
+		height: 200px;
+	}
+</style>
+
+</head>
+<body>
+	<!--  게시판 등록폼 작성 -->
+	<!--  필수 : 제목, 내용, 작성자 -->
+	<form action="http://192.168.210.40:8080/offline-prj/board" method="post">
+		<div>
+			<label>제목</label>
+			<input type="text" name="title" />
+		</div>
+		<div>
+			<label>작성자</label>
+			<input type="text" name="writer" />
+		</div>
+		<div>
+			<label>내용</label>
+			<textarea name="content"></textarea>
+		</div>
+		<div>
+			<button>등록</button>
+		</div>
+	</form>
+	<!-- 등록 버튼을 누르면 ~~/board 서블릿 호출하기 -->
+
+</body>
+</html>
