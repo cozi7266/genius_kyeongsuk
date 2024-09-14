@@ -1,0 +1,2 @@
+String text = "ABABABACABAABABACACA";
+String pattern = "ABABACA";
