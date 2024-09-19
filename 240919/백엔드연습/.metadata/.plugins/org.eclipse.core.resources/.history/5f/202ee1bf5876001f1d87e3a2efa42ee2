@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+ 	label {
+ 		display: inline-block;
+  		width: 100px;			
+ 	}
+ 	
+</style>
+</head>
+<body>
+  	<h2>영화 정보 등록 페이지</h2>
+  	<form>
+  		<input type="hidden" name ="action" value="regist" />
+  		<fieldset><legend>영화 정보 입력</legend>
+  		<div>
+  			<label>제목 : </label>
+  			<input type = "text" name="title">
+  		</div>
+  			<div>
+  			<label>감독 : </label>
+  			<input type = "text" name="director">			
+  		</div>
+  		<div>
+  			<label>장르 : </label>
+  			<input type = "text" name="genre">
+  		</div>
+  		<div>
+  			<label>상영시간 : </label>
+  			<input type = "text" name="runningTime">
+  		</div>
+  		<div>
+  			<button type="submit">등록</button>
+  			<button type="submit">초기화</button>
+  		</div>
+  		</fieldset>
+  	</form>
+</body>
+</html>
