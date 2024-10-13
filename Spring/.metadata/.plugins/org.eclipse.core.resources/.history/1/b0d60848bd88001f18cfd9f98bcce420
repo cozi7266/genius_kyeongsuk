@@ -1,0 +1,23 @@
+package com.ssafy.hw;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+
+import com.ssafy.aop.Person;
+
+public class AopTest {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+		
+		GeneralUser generalUser = context.getBean("generalUser", GeneralUser.class);
+		AdminUser adminUser = context.getBean("adminUser", AdminUser.class);
+		
+		generalUser.useApp();
+		try {
+			adminUser.useApp();			
+		} catch (Exception e) {
+		}
+	}
+
+}

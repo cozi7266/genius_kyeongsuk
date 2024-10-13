@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename source folder &apos;spring_hw_02_2/applicationContext&apos; to &apos;resources&apos;&#x0D;&#x0A;- Original project: &apos;spring_hw_02_2&apos;&#x0D;&#x0A;- Original element: &apos;spring_hw_02_2/applicationContext&apos;&#x0D;&#x0A;- Renamed element: &apos;applicationContext&apos;" description="Rename source folder &apos;applicationContext&apos;" id="org.eclipse.jdt.ui.rename.source.folder" input="/applicationContext" name="resources" stamp="1728745566801" version="1.0"/>
+</session>

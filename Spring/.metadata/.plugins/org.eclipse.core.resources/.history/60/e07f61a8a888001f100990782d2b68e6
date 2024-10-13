@@ -1,0 +1,17 @@
+package com.ssafy.aop;
+
+public class PersonProxy implements Person {
+	
+	//프록시 객체에 주입한 인간
+	private Person person;
+	//설정자 주입
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+	
+	@Override
+	public void coding() {
+		
+	}
+
+}

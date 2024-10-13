@@ -1,0 +1,11 @@
+package com.ssafy.hw;
+
+public class ApplicationException extends Exception {
+	
+	private static final long serialVersionUID = 1L;
+
+	public void handleExcetpion() {
+		System.out.println("애플리케이션에 문제가 생겨 점검합니다.");
+	}
+
+}

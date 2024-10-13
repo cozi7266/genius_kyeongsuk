@@ -1,0 +1,41 @@
+package com.ssafy.hw;
+
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class UserAspect {
+	
+	 @Pointcut("execution(* com.ssafy.hw.*.useApp(..))")
+	 public void mypt() {}
+	
+	 @Before("mypt()")
+	 public void before() {
+	 	System.out.println("애플리케이션을 시작합니다.");
+	 }
+	 
+	 @AfterReturning(value="mypt()", returning="num")
+	 public void afterReturn() {
+	 	System.out.println("애플리케이션 사용을 끝냅니다.");
+	 }
+	 
+	 @AfterThrowing(value="mypt()", throwing="th")
+	 public void afterThrow(Throwable th) {
+	 	System.out.println("애플리케이션에 문제가 생겨 점검합니다.");
+	 	if(th instanceof ApplicationException) {
+	 		((ApplicationException) th).handleException();
+	 	}
+	 }
+	 
+	 @After("mypt()")
+	 public void after() {
+	 	System.out.println("애플리케이션을 상태와 관련없이 종료합니다.");
+	 }
+
+}
