@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.myboard.board.model.dao.BoardDao">
+	<resultMap type="Board" id="boardMap">
+		<result column="no" property="no" />
+		<result column="title" property="title" />
+		<result column="writer" property="writer" />
+		<result column="content" property="content" />
+		<result column="view_cnt" property="viewCnt" />
+		<result column="reg_date" property="regDate" />
+	</resultMap>
+	
+	<resultMap type="com.ssafy.myboard.board.model.dto.BoardFile" 
+	           id="boardFileMap">
+			<result column="file_no" property="fileNo"/>
+			<result column="no" property="no"/>		
+			<result column="file_path" property="filePath"/>	
+			<result column="ori_name" property="oriName"/>	
+			<result column="system_name" property="systemName"/>	
+	</resultMap>
+
+	<select id="selectBoard" resultMap="boardMap">
+		SELECT *
+		FROM board
+		ORDER BY no DESC
+	</select>
+
+	<select id="selectBoardByNo" parameterType="int" resultMap="boardMap">
+		SELECT *
+		FROM board
+		WHERE no= #{no}
+	</select>
+
+
+	<insert id="insertBoard" parameterType="Board"
+		useGeneratedKeys="true" keyProperty="no">
+		<!--
+		 <selectKey keyProperty="no" resultType="int" order="AFTER"> SELECT 
+			last_insert_id() FROM dual </selectKey>
+		 -->
+		INSERT INTO board(title, writer, content)
+		VALUES(#{title}, #{writer}, #{content})
+	</insert>
+
+
+	<insert id="insertBoardFile" parameterType="com.ssafy.myboard.board.model.dto.BoardFile">
+		INSERT INTO board_file(file_path, ori_name, system_name, no) 
+		VALUES(#{filePath}, #{oriName}, #{systemName}, #{no})
+	</insert>
+
+
+
+	<select id="selectBoardFileByNo" parameterType="int" resultMap="boardFileMap">
+		SELECT file_no, no, file_path, ori_name, system_name 
+		FROM board_file
+		WHERE no= #{no}
+	</select>
+
+</mapper>

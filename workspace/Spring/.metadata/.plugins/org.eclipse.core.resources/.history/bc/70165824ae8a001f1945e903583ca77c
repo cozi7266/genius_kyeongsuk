@@ -1,0 +1,12 @@
+package com.ssafy.selfexam.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/param")
+public class O2Parameter {
+	public String index() {
+		return "index";
+	}
+}

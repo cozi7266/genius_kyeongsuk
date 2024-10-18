@@ -1,0 +1,97 @@
+package com.ssafy.myboard.board.model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.stereotype.Repository;
+
+import com.ssafy.myboard.board.model.dto.Board;
+import com.ssafy.myboard.board.model.dto.BoardFile;
+import com.ssafy.myboard.config.MyBatisConfig;
+
+@Repository
+public class BoardDaoImpl implements BoardDao {
+	
+	private final String NS = "com.ssafy.myboard.board.model.dao.BoardDao.";
+	
+	private SqlSessionFactory sqlFactory;
+	public BoardDaoImpl() {
+		sqlFactory = MyBatisConfig.getFactory();
+	}
+	
+	@Override
+	public List<Board> selectBoard() {
+		try(SqlSession sqlSession = sqlFactory.openSession()){
+			List<Board> list = sqlSession.selectList(NS +"selectBoard");
+			return list;
+		}
+	}
+	
+	@Override
+	public void insertBoard(Board board) {
+		try(SqlSession sqlSession = sqlFactory.openSession()){
+			sqlSession.insert(NS + "insertBoard", board);
+		}
+	}
+	
+	@Override
+	public void insertBoardFile(BoardFile boardFile)  {
+		try(SqlSession sqlSession = sqlFactory.openSession()){
+			sqlSession.insert(NS + "insertBoardFile", boardFile);
+		}
+		
+	}
+
+	@Override
+	public Board selectBoardByNo(int no) {
+		String sql = "SELECT title, writer, content, view_cnt, reg_date FROM board WHERE no = ?";
+		try(
+				Connection con = db.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);
+		) {
+			pstmt.setInt(1, no);
+			ResultSet rs = pstmt.executeQuery();
+			Board board = null;
+			if(rs.next()) {
+				board = new Board();
+				board.setTitle(rs.getString("title"));
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setViewCnt(rs.getInt("view_cnt"));
+				board.setRegDate(rs.getString("reg_date"));
+			}
+			return board;
+		}
+	}
+	
+
+
+	@Override
+	public BoardFile selectBoardFileByNo(int no) throws SQLException {
+		String sql = "SELECT file_no, no, file_path, ori_name, system_name FROM board_file WHERE no = ?";
+		try(
+				Connection con = db.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);
+		) {
+			pstmt.setInt(1, no);
+			ResultSet rs = pstmt.executeQuery();
+			BoardFile board = new BoardFile();
+			if(rs.next()) {
+				board.setFileNo(rs.getInt("file_no"));
+				board.setNo(rs.getInt("no"));
+				board.setFilePath(rs.getString("file_path"));
+				board.setOriName(rs.getString("ori_name"));
+				board.setSystemName(rs.getString("system_name"));
+				return board;
+			}
+			return null;
+		}
+	}
+	
+}

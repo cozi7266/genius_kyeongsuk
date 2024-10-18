@@ -1,0 +1,15 @@
+package com.ssafy.selfexam.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/share")
+public class O4share {
+	@GetMapping("/index")
+	public void index() {
+		
+	}
+	
+}

@@ -1,0 +1,24 @@
+package com.ssafy.selfexam.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@Controller
+@RequestMapping("/pagemove")
+public class O3PageMove {	
+	@GetMapping("/index")
+	public void index() {}
+	
+	
+//	@GetMapping("/index")
+//	public String index() {
+//		// WEB-INF/views/pagemove/index.jsp
+//		return "pagemove/index";
+//	}
+	
+	
+	
+}

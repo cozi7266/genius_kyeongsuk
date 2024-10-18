@@ -1,0 +1,9 @@
+127.0.0.1 - - [14/Oct/2024:11:19:18 +0900] "GET / HTTP/1.1" 404 808
+0:0:0:0:0:0:0:1 - - [14/Oct/2024:11:19:19 +0900] "GET /debug/ HTTP/1.1" 200 253
+0:0:0:0:0:0:0:1 - - [14/Oct/2024:11:19:19 +0900] "GET /favicon.ico HTTP/1.1" 404 819
+0:0:0:0:0:0:0:1 - - [14/Oct/2024:11:19:20 +0900] "GET /debug/student?action=registform HTTP/1.1" 200 -
+0:0:0:0:0:0:0:1 - - [14/Oct/2024:11:21:05 +0900] "GET /debug/student?action=registform HTTP/1.1" 200 536
+0:0:0:0:0:0:0:1 - - [14/Oct/2024:11:21:12 +0900] "GET /debug/student?action=list HTTP/1.1" 500 1669
+0:0:0:0:0:0:0:1 - - [14/Oct/2024:11:21:25 +0900] "GET /debug/student?action=registform HTTP/1.1" 200 536
+0:0:0:0:0:0:0:1 - - [14/Oct/2024:11:22:50 +0900] "GET /debug/student?action=registform HTTP/1.1" 200 532
+127.0.0.1 - - [14/Oct/2024:15:13:19 +0900] "GET / HTTP/1.1" 404 808

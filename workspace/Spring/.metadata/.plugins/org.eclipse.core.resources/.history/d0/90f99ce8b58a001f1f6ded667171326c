@@ -1,0 +1,8 @@
+package com.ssafy.selfexam.controller;
+
+public class User {
+	private String id;
+	private String password;
+	
+	
+}

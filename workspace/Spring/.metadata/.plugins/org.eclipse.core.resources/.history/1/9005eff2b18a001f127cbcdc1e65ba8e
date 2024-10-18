@@ -1,0 +1,32 @@
+package com.ssafy.selfexam.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@Controller
+@RequestMapping("/param")
+public class O2Parameter {
+	@GetMapping("test1")
+	public String test1(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		String pass = request.getParameter("pass");
+		return "param/index";
+	}
+	
+	@GetMapping("test2")
+	public String test2(@RequestParam String id, String pass) {
+		System.out.println(id + " " + pass);
+		return "param/index";
+	}
+	
+	
+	@GetMapping("index")
+	public String index() {
+		// /WEB-INF/views/param/index.jsp
+		return "param/index";
+	}
+}
