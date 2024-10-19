@@ -1,0 +1,76 @@
+DROP TABLE IF EXISTS `Member`;
+
+CREATE TABLE `Member` (
+	`seq`	INT	NOT NULL,
+	`id`	VARCHAR(200)	NOT NULL,
+	`password`	VARCHAR(100)	NOT NULL,
+	`member_name`	VARCHAR(50)	NOT NULL,
+	`email`	VARCHAR(200)	NOT NULL,
+	`reg_date`	TIMESTAMP	NOT NULL,
+	`status`	INT	NOT NULL	DEFAULT 1,
+	`post_num`	VARCHAR(20)	NOT NULL,
+	`jibun_addr`	VARCHAR(300)	NOT NULL,
+	`road_addr`	VARCHAR(300)	NOT NULL,
+	`detail_addr`	VARCHAR(300)	NOT NULL,
+	`phone_num`	VARCHAR(200)	NOT NULL
+);
+
+DROP TABLE IF EXISTS `Board`;
+
+CREATE TABLE `Board` (
+	`id`	INT	NOT NULL,
+	`member_seq`	INT	NOT NULL,
+	`title`	VARCHAR(500)	NOT NULL,
+	`content`	VARCHAR(4000)	NOT NULL,
+	`view_cnt`	INT	NOT NULL,
+	`reg_date`	TIMESTAMP	NOT NULL,
+	`video_url`	VARCHAR(4000)	NOT NULL,
+	`workout_name`	VARCHAR(3000)	NOT NULL
+);
+
+DROP TABLE IF EXISTS `Save`;
+
+CREATE TABLE `Save` (
+	`id`	INT	NOT NULL,
+	`board_id`	INT	NOT NULL,
+	`member_seq`	INT	NOT NULL
+);
+
+DROP TABLE IF EXISTS `Follow`;
+
+CREATE TABLE `Follow` (
+	`id`	INT	NOT NULL,
+	`member_seq1`	INT	NOT NULL,
+	`member_seq2`	INT	NOT NULL
+);
+
+DROP TABLE IF EXISTS `Review`;
+
+CREATE TABLE `Review` (
+	`id`	INT	NOT NULL,
+	`content`	VARCHAR(1000)	NOT NULL,
+	`reg_date`	TIMESTAMP	NOT NULL,
+	`board_id`	INT	NOT NULL,
+	`member_seq`	INT	NOT NULL
+);
+
+ALTER TABLE `Member` ADD CONSTRAINT `PK_MEMBER` PRIMARY KEY (
+	`seq`
+);
+
+ALTER TABLE `Board` ADD CONSTRAINT `PK_BOARD` PRIMARY KEY (
+	`id`
+);
+
+ALTER TABLE `Save` ADD CONSTRAINT `PK_SAVE` PRIMARY KEY (
+	`id`
+);
+
+ALTER TABLE `Follow` ADD CONSTRAINT `PK_FOLLOW` PRIMARY KEY (
+	`id`
+);
+
+ALTER TABLE `Review` ADD CONSTRAINT `PK_REVIEW` PRIMARY KEY (
+	`id`
+);
+
