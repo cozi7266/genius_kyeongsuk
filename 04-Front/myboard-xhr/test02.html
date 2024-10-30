@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #output div {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        #output div:hover {
+            cursor: pointer;
+            background-color: #1118;
+            color: #fff;
+            box-shadow: 1px 1px 1px 5px #1118;
+            transition: .1s;
+        }
+    </style>
+</head>
+<body>
+    <div id="btn-area">
+        <button id="btn-all">전체 조회</button>
+        <button id="btn-regist">등록</button>
+    </div>
+    <div id="form-area">
+        <label for="idolName">이름: </label>
+        <input type="text" id="idolName" />
+        <label for="idolGender">성별: </label>
+        <input type="text" id="idolGender" />
+    </div>
+    <div id="output"></div>
+    <script>
+        requestIdolList();
+        function requestIdolList() {
+            const URL = "http://192.168.210.40:8080/api/idol";
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status < 300) {
+                    const outputDiv = document.getElementById("output");
+                    outputDiv.innerHTML = "";
+
+                    const idolList = JSON.parse(xhr.responseText);
+                    idolList.forEach(function (idol) {
+                        const idolDiv = document.createElement("div");
+                        idolDiv.innerHTML = `
+                            <p>번호: ${idol.no}</p>
+                            <p>이름: ${idol.name}</p>
+                            <p>성별: ${idol.gender}</p>
+                        `;
+
+                        outputDiv.appendChild(idolDiv);
+
+                        // 상세 정보 보기를 위한 idolDiv 클릭 이벤트
+                        idolDiv.addEventListener("click", function() {
+                            requestIdolDetail(idol.no);
+                        });
+                    });
+                }
+            };
+
+            xhr.open("GET", URL);
+            xhr.send();
+        }
+
+        function requestIdolDetail(no) {
+            const URL = "http://192.168.210.40:8080/api/idol/" + no;
+            const xhr = new XMLHttpRequest(); // 1단계 객체 생성
+
+            xhr.onreadystatechange = function() { // 2단계. 응답 결과를 처리할 함수 등록
+                if (xhr.readyState == 4 && xhr.status < 300) { // 요청 완료 및 성공
+                    const outputDiv = document.getElementById("output");
+                    outputDiv.innerHTML = ""; // 초기화
+
+                    const idol = JSON.parse(xhr.responseText);
+                    const idolDiv = document.createElement("div");
+                    idolDiv.innerHTML = `
+                        <p>번호 : ${idol.no}</p>
+                        <p>이름 : ${idol.name}</p>
+                        <p>성별 : ${idol.gender}</p>
+                    `;
+
+                    // 수정 버튼
+                    const modifyButton = document.createElement("button");
+                    modifyButton.textContent = "수정";
+                    modifyButton.addEventListener("click", function() {
+                        modifyIdol(idol.no);
+                    });
+                    idolDiv.appendChild(modifyButton);
+
+                    // 삭제 버튼
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = "삭제";
+                    deleteButton.addEventListener("click", function() {
+                        deleteIdol(idol.no);
+                    });
+                    idolDiv.appendChild(deleteButton);
+
+                    outputDiv.appendChild(idolDiv);
+                }
+            };
+
+            xhr.open("GET", URL); // 3단계. 요청 설정
+            xhr.send(); // 4단계. 요청 전송
+        }
+
+        // 전체 조회 버튼
+        const btnAll = document.getElementById("btn-all");
+        btnAll.addEventListener("click", function() {
+            requestIdolList();
+        });
+
+        // 등록 버튼
+        const btnRegist = document.getElementById("btn-regist");
+        btnRegist.addEventListener("click", function() {
+            const URL = "http://192.168.210.40:8080/api/idol";
+            const xhr = new XMLHttpRequest();
+
+            const idolName = document.getElementById("idolName").value;
+            const idolGender = document.getElementById("idolGender").value;
+
+            if (idolName === "" || idolGender === "") {
+                alert("모든 필드를 채워주세요.");
+                return;
+            }
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status < 300) {
+                    requestIdolList();
+                    alert("등록되었습니다.");
+                }
+            };
+            xhr.open("POST", URL);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            const idol = {
+                "name": idolName,
+                "gender": idolGender
+            };
+            xhr.send(JSON.stringify(idol));
+        });
+
+        // 삭제 함수
+        function deleteIdol(idolId) {
+            const URL = `http://192.168.210.40:8080/api/idol/${idolId}`;
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status < 300) {
+                    requestIdolList();
+                    alert("삭제되었습니다.");
+                }
+            };
+            xhr.open("DELETE", URL);
+            xhr.send();
+        }
+
+        // 수정 함수
+        function modifyIdol(idolId) {
+            const URL = `http://192.168.210.40:8080/api/idol/${idolId}`;
+            const xhr = new XMLHttpRequest();
+
+            const idolName = document.getElementById("idolName").value;
+            const idolGender = document.getElementById("idolGender").value;
+
+            if (idolName === "" || idolGender === "") {
+                alert("모든 필드를 채워주세요.");
+                return;
+            }
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status < 300) {
+                    requestIdolList();
+                    alert("수정되었습니다.");
+                }
+            };
+            xhr.open("PUT", URL);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            const idol = {
+                "name": idolName,
+                "gender": idolGender
+            };
+            xhr.send(JSON.stringify(idol));
+        }
+    </script>
+</body>
+</html>

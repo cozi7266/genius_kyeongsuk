@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #output div {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      transition: .1s;
+    }
+    #output div:hover {
+      cursor: pointer;
+      background-color: #1118;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div id="output"></div>
+  <script>
+    function requestIdolList() {
+      // console.log(location.origin);
+      // 아이돌 정보를 제공하는 서버에 전체 목록을 달라고 요청
+      const URL = "http://192.168.210.40:8080/api/idol";
+      const xhr = new XMLHttpRequest(); 
+      xhr.onreadystatechange = function () { 
+        if (xhr.readyState == 4 && xhr.status < 300) {
+          const outputDiv = document.getElementById("output");
+          outputDiv.innerHTML = ""; 
+
+          const idolList = JSON.parse(xhr.responseText);
+          idolList.forEach(function (idol) {
+            const idolDiv = document.createElement("div");
+            // DIV 클릭 시 상세 정보 보이기
+            idolDiv.addEventListener("click", function() {
+              requestIdolData(idol.no);
+            });
+
+            idolDiv.innerHTML = `
+              <p>번호 : ${idol.no}</p>
+              <p>이름 : ${idol.name}</p>
+              <p>성별 : ${idol.gender}</p>
+            `;
+            outputDiv.appendChild(idolDiv);
+          });
+        }
+      };
+      xhr.open("GET", URL);
+      xhr.send();
+    }
+    requestIdolList();
+
+    function requestIdolData(no) {
+      const URL = "http://192.168.210.40:8080/api/idol/" + no;
+      const xhr = new XMLHttpRequest(); 
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status < 300) {
+          const outputDiv = document.getElementById("output");
+          outputDiv.innerHTML = "";  // 초기화 
+          console.log(xhr.responseText);
+          const idol = JSON.parse(xhr.responseText);
+          const idolDiv = document.createElement("div");
+          idolDiv.innerHTML = `
+            <p>번호 : ${idol.no}</p>
+            <p>이름 : ${idol.name}</p>
+            <p>성별 : ${idol.gender}</p>
+          `;
+          outputDiv.appendChild(idolDiv);
+
+          const buttonDiv = document.createElement("div");
+          buttonDiv.innerHTML = `
+             <button onclick="requestIdolList()">전체조회</button>
+             <button onclick="requestIdolDelete(${idol.no})">삭제</button>
+             <button>수정</button>
+          `;
+          outputDiv.appendChild(buttonDiv);
+        }
+      };
+      xhr.open("GET", URL);
+      xhr.send();
+    }
+
+    function requestIdolDelete(no) {
+      const URL = "http://192.168.210.40:8080/api/idol/" + no;
+      const xhr = new XMLHttpRequest(); 
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status < 300) {
+          // 삭제 성공 
+          requestIdolList();
+          alert("삭제되었습니다.");
+        }
+      };
+      xhr.open("DELETE", URL);
+      xhr.send();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    const btnDelete = document.getElementById("btn-delete");
+    btnDelete.addEventListener("click", function() {
+      const URL = "http://192.168.210.40:8080/api/idol/32801";
+      const xhr = new XMLHttpRequest(); 
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status < 300) {
+          // 삭제 성공 
+          requestIdolList();
+          alert("삭제되었습니다.");
+        }
+      };
+      xhr.open("DELETE", URL);
+      xhr.send();
+    });
+
+    const btnAll = document.getElementById("btn-all");
+    btnAll.addEventListener("click", function() {
+      requestIdolList();
+    });
+
+
+
+    const btnRegist = document.getElementById("btn-regist");
+    btnRegist.addEventListener("click", function () {
+      const URL = "http://192.168.210.40:8080/api/idol";
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status < 300) {
+          // 등록 성공~~ : 목록 요청하기
+          requestIdolList();  
+          alert("등록되었습니다.");
+        }
+      };
+      xhr.open("POST", URL);
+      ///////////////////////////////////////////////////
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      const idol = {
+        "name": "로제 & 부르노마스",
+        "gender": "F" 
+      };
+      xhr.send(JSON.stringify(idol));
+      ///////////////////////////////////////////////////
+    });
+
+    const btnModify = document.getElementById("btn-modify");
+    btnModify.addEventListener("click", function () {
+      const URL = "http://192.168.210.40:8080/api/idol/33056";
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status < 300) {
+          // 수정 성공~~ : 목록 요청하기
+          requestIdolList();  
+          alert("등록되었습니다.");
+        }
+      };
+      xhr.open("PUT", URL);
+      ///////////////////////////////////////////////////
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      const idol = {
+        "name": "APT : 로제 & 부르노마스"
+      };
+      xhr.send(JSON.stringify(idol));
+      ///////////////////////////////////////////////////
+    });
+    */
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

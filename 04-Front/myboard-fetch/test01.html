@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #output div {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div id="btn-area">
+    <button id="btn-all">전체 조회</button>
+    <button id="btn-one">상세 조회</button>
+    <button id="btn-regist">등록</button>
+    <button id="btn-modify">수정</button>
+    <button id="btn-delete">삭제</button>
+
+  </div>
+  <div id="output"></div>
+  <script>
+    function requestIdolList() {
+      fetch("http://192.168.210.40:8080/api/idol")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (idolList) {
+        const outputDiv = document.getElementById("output");
+          outputDiv.innerHTML = "";  // 초기화 
+          idolList.forEach(function (idol) {
+            const idolDiv = document.createElement("div");
+            console.log(idol.no, idol.name, idol.gender);
+            idolDiv.innerHTML = `
+              <p>번호 : ${idol.no}</p>
+              <p>이름 : ${idol.name}</p>
+              <p>성별 : ${idol.gender}</p>
+            `;
+            outputDiv.appendChild(idolDiv);
+          });
+      }) 
+      .catch(function () {});
+    }
+
+    const btnDelete = document.getElementById("btn-delete");
+    btnDelete.addEventListener("click", function() {
+      fetch("http://192.168.210.40:8080/api/idol/185", {method: "DELETE"})
+      .then(function (response) {
+          // 삭제 성공 
+          requestIdolList();
+          alert("삭제되었습니다.");
+      })
+      .catch();
+    });
+
+    const btnAll = document.getElementById("btn-all");
+    btnAll.addEventListener("click", function() {
+      requestIdolList();
+    });
+
+    const btnOne = document.getElementById("btn-one");
+    btnOne.addEventListener("click", function() {
+      fetch("http://192.168.210.40:8080/api/idol/260")
+      .then(function(response) {   // Idol {"no": 260, "name": "로제", "gender": "F"}
+        return response.json();
+      })
+      .then(function (idol) {
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = "";  // 초기화 
+        const idolDiv = document.createElement("div");
+        idolDiv.innerHTML = `
+          <p>번호 : ${idol.no}</p>
+          <p>이름 : ${idol.name}</p>
+          <p>성별 : ${idol.gender}</p>
+        `;
+        outputDiv.appendChild(idolDiv);
+      })
+      .catch();
+    });
+
+    const btnRegist = document.getElementById("btn-regist");
+    btnRegist.addEventListener("click", function () {
+      fetch("http://192.168.210.40:8080/api/idol", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8"
+        },
+        body: JSON.stringify({
+          "name": "로제 & 부르노마스",
+          "gender": "F" 
+        })
+      })
+      .then(function () {
+        requestIdolList();  
+        alert("등록되었습니다.");
+      })
+      .catch(function () {});
+    });
+
+    const btnModify = document.getElementById("btn-modify");
+    btnModify.addEventListener("click", function () {
+      fetch("http://192.168.210.40:8080/api/idol/394", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8"
+        },
+        body: JSON.stringify({
+          "name": "APT - 로제 & 부르노마스"
+        })
+      })
+      .then(function () {
+        requestIdolList();  
+        alert("수정 되었습니다.");
+      })
+      .catch(function () {});
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

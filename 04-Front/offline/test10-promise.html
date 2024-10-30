@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        myFetch("abcde")
+        .then(function(response){
+            console.log(response.data, response.msg)
+            console.log("난 성공해서 불렸음")
+        })
+        .catch(function(){
+            console.log("난 실패했음")
+        })
+
+      // Promise 객체를 반환하는 함수 정의
+      function myFetch(data) {
+        return new Promise(function (success, fail) {
+            if(data.length >  10){ // 실패
+              fail({
+                errorCode: 100
+              });
+            } else {
+              success({
+                data: data, 
+                msg: data.length + "의 메세지는 10자 이하입니다."
+              });
+            }
+        });
+      }
+    </script>
+</body>
+</html>

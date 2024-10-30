@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            함수 형태의 객체
+            ES6(ecma2015) 부터 제공
+
+            사용하는 형식
+            new Promise(executor-callbackfn);
+
+            executor-callbackfn 함수의 형태
+            function executor(resolve, reject){}
+
+            resolve : 성공시 실행 하는 함수 - then 이 호출됨
+            reject : 실패시 실행 하는 함수 - catch 가 호출됨
+        */
+        let success = false;
+        new Promise(function (resolve, reject) {
+            console.log('promise 실행')
+            if(success){    // 성공
+               resolve("성공하였음...");
+            } else {        // 실패
+               reject("문제가 발생하였음...");            
+            }
+        })
+        .then(function(msg) {
+            console.log("Promise가 성공되어서 then을 불렀음", msg);
+        })
+        .catch(function(errorMsg) {
+            console.log("Promise가 실패해서 catch를 불렀음", errorMsg);            
+        })
+        .finally(function(){
+            console.log("Promise의 성공,실패 여부 상관 없이 불려짐")
+        })
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #output div {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="btn-area">
+    <button id="btn-all">전체 조회</button>
+    <button id="btn-one">상세 조회</button>
+    <button id="btn-regist">등록</button>
+    <button id="btn-modify">수정</button>
+    <button id="btn-delete">삭제</button>
+  </div>
+  <div id="output"></div>
+  <script>
+    function requestIdolList() {
+      axios.get("http://192.168.210.40:8080/api/idol")
+      .then(function (response) {
+        const idolList = response.data;
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = ""; // 초기화 
+        idolList.forEach(function (idol) {
+          const idolDiv = document.createElement("div");
+          console.log(idol.no, idol.name, idol.gender);
+          idolDiv.innerHTML = `
+            <p>번호 : ${idol.no}</p>
+            <p>이름 : ${idol.name}</p>
+            <p>성별 : ${idol.gender}</p>
+          `;
+          outputDiv.appendChild(idolDiv);
+        });
+      }) 
+      .catch(function (error) {
+        console.error("전체 조회 오류:", error);
+      });
+    }
+
+    const btnDelete = document.getElementById("btn-delete");
+    btnDelete.addEventListener("click", function() {
+      axios.delete("http://192.168.210.40:8080/api/idol/185")
+      .then(function (response) {
+          // 삭제 성공 
+          requestIdolList();
+          alert("삭제되었습니다.");
+      })
+      .catch(function (error) {
+        console.error("삭제 오류:", error);
+      });
+    });
+
+    const btnAll = document.getElementById("btn-all");
+    btnAll.addEventListener("click", function() {
+      requestIdolList();
+    });
+
+    const btnOne = document.getElementById("btn-one");
+    btnOne.addEventListener("click", function() {
+      axios.get("http://192.168.210.40:8080/api/idol/260")
+      .then(function(response) {   // Idol {"no": 260, "name": "로제", "gender": "F"}
+        const idol = response.data;
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = "";  // 초기화 
+        const idolDiv = document.createElement("div");
+        idolDiv.innerHTML = `
+          <p>번호 : ${idol.no}</p>
+          <p>이름 : ${idol.name}</p>
+          <p>성별 : ${idol.gender}</p>
+        `;
+        outputDiv.appendChild(idolDiv);
+      })
+      .catch(function (error) {
+        console.error("상세 조회 오류:", error);
+      });
+    });
+
+    const btnRegist = document.getElementById("btn-regist");
+    btnRegist.addEventListener("click", function () {
+      axios.post("http://192.168.210.40:8080/api/idol", {
+        name: "",
+        gender: "F" 
+      })
+      .then(function (response) {
+        requestIdolList();  
+        alert("등록되었습니다.");
+      })
+      .catch(function (error) {
+        console.error("등록 오류:", error);
+      });
+    });
+
+    const btnModify = document.getElementById("btn-modify");
+    btnModify.addEventListener("click", function () {
+      axios.put("http://192.168.210.40:8080/api/idol/422", {
+        name: ""
+      })
+      .then(function (response) {
+        requestIdolList();  
+        alert("수정 되었습니다.");
+      })
+      .catch(function (error) {
+        console.error("수정 오류:", error);
+      });
+    });
+  </script>
+</body>
+</html>
