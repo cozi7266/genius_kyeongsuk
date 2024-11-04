@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        .is-selected {
+            background-color: grey;
+        }
+
+        .is-required {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>다양한 전시 정보</h1>
+        <hr>
+        <ul>
+            <input type="checkbox" id="csharp" v-model="isExhibitionSelected">
+            <label for="csharp">전시 선택</label>
+            <li :id="enTitle" :class="{ 'is-selected': isExhibitionSelected }">
+                <h3>{{ koTitle }}</h3>
+                <p v-html="description"></p>
+                <hr>
+                <p>{{ artMuseum }}</p>
+                <a :href="museumURL">전시장 바로가기</a>
+                <hr>
+                <p>입장권 구매하기</p>
+                <div>
+                    <span :class="{ 'is-required': people === 0 }">인원 수 : {{ people }} 명 </span>
+                    <button @click="decreaseNum">-</button>
+                    <button @click="increaseNum">+</button>
+                </div>
+                <p>총 입장료 : {{ total }} 원</p>
+                <hr>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        const app = createApp({
+            setup() {
+
+              
+                const koTitle = ref("모네 인사이드");
+                const enTitle = ref("monet-inside");
+                const artMuseum = ref("예술의전당");
+                const museumURL = ref("https://www.sac.or.kr/");
+                const description = ref("<모네 인사이드> 는 빛의 화가 <strong>클로드 모네</strong>가 남긴 소중한 명작들을 현대적 감각으로 재해석해 음악과 함께 감상하는 미디어아트 전시입니다.");
+                
+                const isExhibitionSelected = ref(false); 
+                const people = ref(0); 
+                const pricePerPerson = 1000;
+                const total = ref(0);
+
+                function decreaseNum() {
+                    if (people.value > 0) {
+                        people.value--;
+                        total.value = people.value * pricePerPerson;
+                    }
+                }
+
+                function increaseNum() {
+                    people.value++;
+                    total.value = people.value * pricePerPerson;
+                }
+
+                return {
+                    koTitle,
+                    enTitle,
+                    artMuseum,
+                    museumURL,
+                    description,
+                    isExhibitionSelected,
+                    people,
+                    total,
+                    decreaseNum,
+                    increaseNum,
+                }
+            }
+        });
+
+        app.mount("#app");
+    </script>
+</body>
+
+</html>

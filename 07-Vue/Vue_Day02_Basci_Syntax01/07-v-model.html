@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <input type="checkbox" v-model="checked" id="check">
+      <label for="check">로봇쳌</label>
+      <hr>
+      <div>쳌네임 : {{checkedNames}}</div>
+      <input type="checkbox" value="Yang" v-model="checkedNames" id="Yang">
+      <label for="Yang">Yang</label>
+      <input type="checkbox" value="Lee" v-model="checkedNames" id="Lee">
+      <label for="Lee">Lee</label>
+      <input type="checkbox" value="Ji" v-model="checkedNames" id="Ji">
+      <label for="Ji">Ji</label>
+      <hr>
+      <!-- 라디오 버튼 해볼것! -->
+      <hr>
+      <select v-model="selected" name="selected">
+        <option value="" disabled>선택 좀 해줘잉</option>
+        <option value="Bang">방</option>
+        <option value="Kim">김</option>
+        <option value="Oh">오</option>
+      </select>
+
+      {{selected}}
+
+
+    </div>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const checked = ref(false);
+          const checkedNames = ref([]);
+          const selected = ref("");
+
+          return {
+            checked,
+            checkedNames,
+            selected,
+          };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

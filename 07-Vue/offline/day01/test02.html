@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <!--
+        화면이 로딩 시 한글 이름이 출력됨.
+        2초 뒤에 영문 이름으로 변경됨.
+
+        화면에 Vue를 적용할 영역 설정.
+
+        createApp, ref, setup - 화면에서 출력할 변수를 리턴.
+        반응형으로 이름이 변경되어야 하므로 ref 함수 사용.
+        화면과 연결하기 위해 mount 사용.
+    -->
+    <div id="app">
+        {{ name }}
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                let name = ref("이경석");
+
+                setTimeout(() => {
+                    name.value = "Lee Kyeong Suk";
+                }, 2000);
+
+                return {
+                    name
+                };
+            }
+        }).mount("#app");
+    </script>
+</body>
+</html>
