@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .exhibition-item {
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    .active-exhibition {
+      background-color: #ffffcc; /* Light yellow for active exhibitions */
+    }
+
+    .ended-exhibition {
+      background-color: #f0f0f0; /* Light gray for ended exhibitions */
+    }
+
+    .free-exhibition {
+      background-color: #ffffe0; /* Light yellow for free exhibitions */
+    }
+
+    .not-available {
+      color: red;
+      font-weight: bold;
+    }
+
+    .exhibition-title {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <div id="app">
+    <h1>다양한 전시 정보</h1>
+    <label for="isActive">전시 중인 정보만 보기</label>
+    <input type="checkbox" id="isActive" v-model="isActive">
+    <ul>
+      <li v-for="exhibition in filteredExhibitions" :key="exhibition.title"
+          :class="['exhibition-item', exhibition.isActive ? 'active-exhibition' : 'ended-exhibition', exhibition.price === 0 ? 'free-exhibition' : '']">
+        <h3 class="exhibition-title">{{ exhibition.title }} </h3>
+        <p>전시 장소 : {{ exhibition.artMuseum }}</p>
+        <p>가격 : {{ exhibition.price }}</p>
+        <p v-if="exhibition.price === 0">무료 전시입니다.</p>
+        
+        <div v-if="exhibition.isActive">
+          <button @click="exhibition.isSelected = !exhibition.isSelected">
+            {{ exhibition.isSelected ? '관람 취소하기' : '관람 하기' }}
+          </button>
+        </div>
+        <p v-else class="not-available">전시가 종료되어 관람 할 수 없습니다.</p>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const { createApp, ref, computed } = Vue;
+
+    const app = createApp({
+      setup() {
+        const exhibitions = ref([
+          {
+            title: "무라카미 다카시 : 무라카시좀비",
+            artMuseum: "부산 시립 미술관",
+            price: 1000,
+            isActive: true,
+            isSelected: false
+          },
+          {
+            title: "마우라치오 카텔란 개인전",
+            artMuseum: "리움 미술관",
+            price: 30000,
+            isActive: true,
+            isSelected: false
+          },
+          {
+            title: "조선백자전",
+            artMuseum: "리움 미술관",
+            price: 30000,
+            isActive: true,
+            isSelected: false
+          },
+          {
+            title: "한국 실험미술 1960 - 1970",
+            artMuseum: "국립현대미술관",
+            price: 0,
+            isActive: true,
+            isSelected: false
+          },
+          {
+            title: "에드워드 호퍼 : 길 위에서",
+            artMuseum: "서울 시립 미술관",
+            price: 1000,
+            isActive: false,
+            isSelected: false
+          },
+          {
+            title: "알렉산더 칼더 x 이우환",
+            artMuseum: "국제갤러리 서울점",
+            price: 15000,
+            isActive: false,
+            isSelected: false
+          },
+        ]);
+
+        const isActive = ref(false);
+
+        const filteredExhibitions = computed(() => {
+          return isActive.value
+            ? exhibitions.value.filter(exhibition => exhibition.isActive)
+            : exhibitions.value;
+        });
+
+        return {
+          exhibitions,
+          isActive,
+          filteredExhibitions
+        };
+      }
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+
+</html>
