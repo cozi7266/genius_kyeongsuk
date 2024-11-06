@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #list div, #detail div {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>   
+</head>
+<body>
+  <div id="app">
+    <!-- 아이돌 목록 파트 -->
+    <div id="list" v-if="currentView === 'list'">
+      <button @click="registerIdolForm">등록</button>
+      <div v-for="idol in idols" :key="idol.no" 
+           @click="detailIdol(idol.no)">
+        <p>번호 : {{idol.no}}</p>
+        <p>이름 : {{idol.name}}</p>
+        <p>성별 : {{idol.gender}}</p>  
+      </div>
+    </div>
+    <!-- 아이돌 상세 정보 파트 -->
+    <div id="detail" v-if="currentView === 'detail'">
+      <div>
+        <p>번호 : {{idol.no}}</p>
+        <p>이름 : {{idol.name}}</p>
+        <p>성별 : {{idol.gender}}</p>  
+      </div>
+      <button @click="deleteIdol(idol.no)">삭제</button>
+      <button @click="requestIdolList">목록</button>
+    </div>
+
+
+
+
+
+
+
+
+
+    
+    <!-- 아이돌 등록 파트 -->
+    <div id="register" v-if="currentView === 'register'">
+      <form @submit.prevent="registerIdol">
+        <p>이름 : <input type="text" v-model="idol.name"></p>
+        <p>성별 : <input type="text" v-model="idol.gender"></p>
+        <button>등록</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue;
+
+    createApp({
+      setup() {
+        const currentView = ref("list");
+        const idols = ref([]);  // 전체 아이돌 목록
+        const idol = ref({});  // 선택한 아이돌 상세 정보
+
+        const registerIdolForm = () => {
+          currentView.value = "register";
+        }
+
+        const registerIdol = async () => {
+          await axios.post("http://192.168.210.40:8080/api/idol", idol.value);
+          requestIdolList();
+        }
+
+        const requestIdolList = async () => {
+          const {data} = await axios.get("http://192.168.210.40:8080/api/idol");
+          idols.value = data;
+          currentView.value = "list";
+        }
+        const detailIdol = async (no) => {
+          const {data} = await axios.get(`http://192.168.210.40:8080/api/idol/${no}`);
+          idol.value = data;
+          currentView.value = "detail";
+        }
+
+        const deleteIdol = async (no) => {
+          await axios.delete(`http://192.168.210.40:8080/api/idol/${no}`);
+          requestIdolList();
+        }
+
+        requestIdolList();
+
+        return {
+          idols, 
+          idol,
+          detailIdol,
+          currentView,
+          requestIdolList,
+          registerIdolForm,
+          registerIdol,
+          deleteIdol
+        }
+      }  
+    }).mount('#app');
+  </script>
+</body>
+</html>
